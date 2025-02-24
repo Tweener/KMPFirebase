@@ -1,4 +1,4 @@
-name: Kmplate_Library build
+name: KMPFirebase build
 
 on:
   workflow_call:

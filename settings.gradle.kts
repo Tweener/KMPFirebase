@@ -15,6 +15,6 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "Kmplate_Library"
-include(":changehere")
+rootProject.name = "KMPFirebase"
+include(":kmpfirebase")
 include(":sample:composeApp")

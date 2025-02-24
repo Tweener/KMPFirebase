@@ -2,25 +2,24 @@ import org.gradle.api.JavaVersion
 
 /**
  * @author Vivien Mahe
- * @since 23/07/2022
+ * @since 24/02/2025
  */
 
 object ProjectConfiguration {
 
-    object MyProject {
-        const val packageName = "com.tweener.changehere"
-        const val versionName = "1.0.0"
+    object KMPFirebase {
+        const val packageName = "com.tweener.firebase"
+        const val versionName = "1.3.1"
         const val namespace = "$packageName.android"
         const val compileSDK = 35
         const val minSDK = 24
 
-        // TODO Change all the values in this block to your needs
         object Maven {
-            const val name = "MyKMPLibrary"
-            const val description = "All Tweener commons stuff for Kotlin Multiplatform"
+            const val name = "KMPFirebase"
+            const val description = "A Kotlin Multiplatform library which wraps GitLiveApp Firebase SDK and provides a more straightforward implementation."
             const val group = "io.github.tweener"
-            const val packageUrl = "https://github.com/Tweener/czan"
-            const val gitUrl = "github.com:Tweener/czan.git"
+            const val packageUrl = "https://github.com/Tweener/KMPFirebase"
+            const val gitUrl = "github.com:Tweener/KMPFirebase.git"
 
             object Developer {
                 const val id = "Tweener"

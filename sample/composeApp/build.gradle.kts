@@ -22,7 +22,7 @@ kotlin {
             isStatic = true
 
             // Add here any extra framework dependencies
-            export(project(":changehere"))
+            export(project(":kmpfirebase"))
         }
     }
 
@@ -30,7 +30,7 @@ kotlin {
 
     sourceSets {
         commonMain.dependencies {
-            api(project(":changehere"))
+            api(project(":kmpfirebase"))
 
             // Tweener
             implementation(libs.kmpkit)
@@ -51,13 +51,13 @@ kotlin {
 }
 
 android {
-    namespace = ProjectConfiguration.MyProject.packageName + ".sample"
-    compileSdk = ProjectConfiguration.MyProject.compileSDK
+    namespace = ProjectConfiguration.KMPFirebase.packageName + ".sample"
+    compileSdk = ProjectConfiguration.KMPFirebase.compileSDK
 
     defaultConfig {
-        applicationId = ProjectConfiguration.MyProject.packageName + ".sample"
-        minSdk = ProjectConfiguration.MyProject.minSDK
-        targetSdk = ProjectConfiguration.MyProject.compileSDK
+        applicationId = ProjectConfiguration.KMPFirebase.packageName + ".sample"
+        minSdk = ProjectConfiguration.KMPFirebase.minSDK
+        targetSdk = ProjectConfiguration.KMPFirebase.compileSDK
         versionCode = 1
         versionName = "1.0"
     }
