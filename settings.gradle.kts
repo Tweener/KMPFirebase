@@ -16,5 +16,4 @@ dependencyResolutionManagement {
 }
 
 rootProject.name = "KMPFirebase"
-include(":kmpfirebase")
-include(":sample:composeApp")
+include(":kmp-firebase")
