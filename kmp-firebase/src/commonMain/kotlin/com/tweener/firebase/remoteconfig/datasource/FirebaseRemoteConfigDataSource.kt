@@ -1,6 +1,6 @@
 package com.tweener.firebase.remoteconfig.datasource
 
-import com.tweener.firebase.remoteconfig.RemoteConfigService
+import com.tweener.firebase.remoteconfig.FirebaseRemoteConfigService
 import io.github.aakira.napier.Napier
 
 /**
@@ -8,7 +8,7 @@ import io.github.aakira.napier.Napier
  * @since 16/12/2023
  */
 class FirebaseRemoteConfigDataSource(
-    private val firebaseRemoteConfigService: RemoteConfigService,
+    private val firebaseRemoteConfigService: FirebaseRemoteConfigService,
 ) {
 
     suspend fun getBoolean(key: String, defaultValue: Boolean): Boolean =

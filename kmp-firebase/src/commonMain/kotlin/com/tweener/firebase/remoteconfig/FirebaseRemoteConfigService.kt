@@ -11,7 +11,7 @@ import kotlin.time.Duration.Companion.seconds
  * @author Vivien Mahe
  * @since 16/12/2023
  */
-class RemoteConfigService(
+class FirebaseRemoteConfigService(
     private val isDebug: Boolean,
 ) {
 
