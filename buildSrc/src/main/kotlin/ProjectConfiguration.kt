@@ -9,7 +9,7 @@ object ProjectConfiguration {
 
     object KMPFirebase {
         const val packageName = "com.tweener.firebase"
-        const val versionName = "1.4.0"
+        const val versionName = "1.4.1"
         const val namespace = "$packageName.android"
         const val compileSDK = 35
         const val minSDK = 24
@@ -18,6 +18,7 @@ object ProjectConfiguration {
             const val name = "KMPFirebase"
             const val description = "A Kotlin Multiplatform library which wraps GitLiveApp Firebase SDK and provides a more straightforward implementation."
             const val group = "io.github.tweener"
+            const val artifactId = "KMPFirebase"
             const val packageUrl = "https://github.com/Tweener/KMPFirebase"
             const val gitUrl = "github.com:Tweener/KMPFirebase.git"
 
