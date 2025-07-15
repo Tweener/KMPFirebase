@@ -40,9 +40,6 @@ jobs:
       - name: Validate Gradle Wrapper
         uses: gradle/actions/wrapper-validation@v3
 
-      - name: Print Gradle properties (debug)
-        run: ./gradlew properties --no-daemon --no-configuration-cache
-
       - name: Set up Java JDK ${{ vars.JAVA_JDK_VERSION }}
         uses: actions/setup-java@v4
         with:
