@@ -34,14 +34,14 @@ jobs:
     runs-on: ${{ matrix.os }}
 
     steps:
-      - name: Print Gradle properties (debug)
-        run: ./gradlew properties --no-daemon --no-configuration-cache
-
       - name: Checkout
         uses: actions/checkout@v4
 
       - name: Validate Gradle Wrapper
         uses: gradle/actions/wrapper-validation@v3
+
+      - name: Print Gradle properties (debug)
+        run: ./gradlew properties --no-daemon --no-configuration-cache
 
       - name: Set up Java JDK ${{ vars.JAVA_JDK_VERSION }}
         uses: actions/setup-java@v4
