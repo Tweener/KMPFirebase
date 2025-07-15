@@ -32,7 +32,7 @@ jobs:
           - target: publishKotlinMultiplatformPublicationToMavenCentralRepository
             os: ubuntu-latest
     runs-on: ${{ matrix.os }}
-    
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
