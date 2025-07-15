@@ -1,18 +1,18 @@
 [versions]
-kotlin = "2.1.10"
-gradle = "8.7.3"
-dependencyVersionsPlugin = "0.51.0"
-nexusSonatype = "2.0.0"
-dokka = "1.9.20"
+kotlin = "2.2.0"
+gradle = "8.11.1"
+dependencyVersionsPlugin = "0.52.0"
+dokka = "2.0.0"
+mavenPublish = "0.33.0"
 androidAnnotations = "1.9.1"
-coroutines = "1.10.1"
+coroutines = "1.10.2"
 napier = "2.7.1"
-kmpKit = "1.0.4"
+kmpKit = "1.0.10"
 firebaseGitLiveApp = "2.1.0" # Firebase for KMP https://firebaseopensource.com/projects/gitliveapp/firebase-kotlin-sdk/
-serializationJson = "1.7.3"
+serializationJson = "1.9.0"
 
 # Android
-androidCore = "1.15.0"
+androidCore = "1.16.0"
 
 [libraries]
 napier = { group = "io.github.aakira", name = "napier", version.ref = "napier" }
@@ -41,7 +41,7 @@ android-application = { id = "com.android.application", version.ref = "gradle" }
 android-library = { id = "com.android.library", version.ref = "gradle" }
 dependency-versions = { id = "com.github.ben-manes.versions", version.ref = "dependencyVersionsPlugin" }
 dokka = { id = "org.jetbrains.dokka", version.ref = "dokka" }
-nexus-sonatype = { id = "io.github.gradle-nexus.publish-plugin", version.ref = "nexusSonatype" }
+maven-publish = { id = "com.vanniktech.maven.publish", version.ref = "mavenPublish" }
 
 [bundles]
 firebase = ["firebase-firestore", "firebase-config", "firebase-functions", "firebase-crashlytics", "firebase-analytics"]

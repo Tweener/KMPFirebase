@@ -1,3 +1,5 @@
+import com.vanniktech.maven.publish.JavadocJar
+import com.vanniktech.maven.publish.KotlinMultiplatform
 import org.jetbrains.dokka.gradle.DokkaTask
 import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.ExperimentalWasmDsl
@@ -9,8 +11,7 @@ plugins {
     alias(libs.plugins.kotlin.serialization)
     alias(libs.plugins.android.library)
     alias(libs.plugins.dokka)
-    id("maven-publish")
-    id("signing")
+    alias(libs.plugins.maven.publish)
 }
 
 android {
@@ -97,72 +98,55 @@ kotlin {
 group = ProjectConfiguration.KMPFirebase.Maven.group
 version = ProjectConfiguration.KMPFirebase.versionName
 
-// Dokka configuration
-tasks.register<Jar>("dokkaJavadocJar") {
-    dependsOn(tasks.dokkaHtml)
-    from(tasks.dokkaHtml.flatMap { it.outputDirectory })
-    archiveClassifier.set("javadoc")
-}
+mavenPublishing {
+    publishToMavenCentral(automaticRelease = true)
 
-tasks.withType<DokkaTask>().configureEach {
-    dokkaSourceSets.configureEach {
-        jdkVersion.set(ProjectConfiguration.Compiler.jvmTarget.toInt())
-        languageVersion.set(libs.versions.kotlin)
-
-        sourceLink {
-            localDirectory.set(rootProject.projectDir)
-            remoteUrl.set(URI(ProjectConfiguration.KMPFirebase.Maven.packageUrl + "/tree/main").toURL())
-            remoteLineSuffix.set("#L")
-        }
+    // Only disable signing if the flag is explicitly set to false
+    val signAllPublicationsProperty = findProperty("mavenPublishing.signAllPublications")
+    if (signAllPublicationsProperty == null || signAllPublicationsProperty.toString().toBoolean()) {
+        signAllPublications()
     }
-}
 
-publishing {
-    publications {
-        publications.withType<MavenPublication> {
-            artifact(tasks["dokkaJavadocJar"])
+    coordinates(groupId = group.toString(), artifactId = ProjectConfiguration.KMPFirebase.Maven.artifactId, version = version.toString())
+    configure(
+        platform = KotlinMultiplatform(
+            javadocJar = JavadocJar.Dokka("dokkaHtml"),
+            sourcesJar = false,
+        )
+    )
 
-            pom {
-                name.set(ProjectConfiguration.KMPFirebase.Maven.name)
-                description.set(ProjectConfiguration.KMPFirebase.Maven.description)
-                url.set(ProjectConfiguration.KMPFirebase.Maven.packageUrl)
+    pom {
+        name.set(ProjectConfiguration.KMPFirebase.Maven.name)
+        description.set(ProjectConfiguration.KMPFirebase.Maven.description)
+        url.set(ProjectConfiguration.KMPFirebase.Maven.packageUrl)
 
-                licenses {
-                    license {
-                        name.set("The Apache License, Version 2.0")
-                        url.set("http://www.apache.org/licenses/LICENSE-2.0.txt")
-                    }
-                }
-
-                issueManagement {
-                    system.set("GitHub Issues")
-                    url.set("${ProjectConfiguration.KMPFirebase.Maven.packageUrl}/issues")
-                }
-
-                developers {
-                    developer {
-                        id.set(ProjectConfiguration.KMPFirebase.Maven.Developer.id)
-                        name.set(ProjectConfiguration.KMPFirebase.Maven.Developer.name)
-                        email.set(ProjectConfiguration.KMPFirebase.Maven.Developer.email)
-                    }
-                }
-
-                scm {
-                    connection.set("scm:git:git://${ProjectConfiguration.KMPFirebase.Maven.gitUrl}")
-                    developerConnection.set("scm:git:ssh://${ProjectConfiguration.KMPFirebase.Maven.gitUrl}")
-                    url.set(ProjectConfiguration.KMPFirebase.Maven.packageUrl)
-                }
+        licenses {
+            license {
+                name.set("The Apache License, Version 2.0")
+                url.set("http://www.apache.org/licenses/LICENSE-2.0.txt")
             }
         }
+
+        issueManagement {
+            system.set("GitHub Issues")
+            url.set("${ProjectConfiguration.KMPFirebase.Maven.packageUrl}/issues")
+        }
+
+        developers {
+            developer {
+                id.set(ProjectConfiguration.KMPFirebase.Maven.Developer.id)
+                name.set(ProjectConfiguration.KMPFirebase.Maven.Developer.name)
+                email.set(ProjectConfiguration.KMPFirebase.Maven.Developer.email)
+            }
+        }
+
+        scm {
+            connection.set("scm:git:git://${ProjectConfiguration.KMPFirebase.Maven.gitUrl}")
+            developerConnection.set("scm:git:ssh://${ProjectConfiguration.KMPFirebase.Maven.gitUrl}")
+            url.set(ProjectConfiguration.KMPFirebase.Maven.packageUrl)
+        }
     }
 }
 
-signing {
-    if (project.hasProperty("signing.gnupg.keyName")) {
-        println("Signing lib...")
-        useGpgCmd()
-        sign(publishing.publications)
-    }
-}
 
 // endregion Publishing
