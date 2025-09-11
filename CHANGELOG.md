@@ -1,5 +1,10 @@
 # Changelog
 
+## [1.5.0] - September 11, 2025
+- Update Kotlin to 2.2.10.
+- Update Gradle to 8.13.0.
+- Update GitLiveApp to 2.3.0.
+
 ## [1.4.1] - July 15, 2025
 - Update Kotlin to 2.2.0.
 - Update Compose Multiplatform to 1.8.2.
