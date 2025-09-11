@@ -9,9 +9,9 @@ object ProjectConfiguration {
 
     object KMPFirebase {
         const val packageName = "com.tweener.firebase"
-        const val versionName = "1.4.1"
+        const val versionName = "1.5.0"
         const val namespace = "$packageName.android"
-        const val compileSDK = 35
+        const val compileSDK = 36
         const val minSDK = 24
 
         object Maven {
