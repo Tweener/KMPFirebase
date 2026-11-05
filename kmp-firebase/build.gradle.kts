@@ -1,46 +1,23 @@
 import com.vanniktech.maven.publish.JavadocJar
 import com.vanniktech.maven.publish.KotlinMultiplatform
+import com.vanniktech.maven.publish.SourcesJar
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
     alias(libs.plugins.kotlin.multiplatform)
     alias(libs.plugins.kotlin.serialization)
-    alias(libs.plugins.android.library)
+    alias(libs.plugins.android.kotlin.multiplatform.library)
     alias(libs.plugins.dokka)
     alias(libs.plugins.maven.publish)
-}
-
-android {
-    namespace = ProjectConfiguration.KMPFirebase.namespace
-    compileSdk = ProjectConfiguration.KMPFirebase.compileSDK
-
-    defaultConfig {
-        minSdk = ProjectConfiguration.KMPFirebase.minSDK
-
-        consumerProguardFiles("consumer-rules.pro")
-    }
-
-    buildTypes {
-        getByName("release") {
-            isMinifyEnabled = false
-            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
-        }
-
-        getByName("debug") {
-        }
-    }
-
-    compileOptions {
-        sourceCompatibility = ProjectConfiguration.Compiler.javaCompatibility
-        targetCompatibility = ProjectConfiguration.Compiler.javaCompatibility
-    }
 }
 
 kotlin {
     applyDefaultHierarchyTemplate()
 
-    androidTarget {
-        publishLibraryVariants("release")
+    android {
+        namespace = ProjectConfiguration.KMPFirebase.namespace
+        compileSdk = ProjectConfiguration.KMPFirebase.compileSDK
+        minSdk = ProjectConfiguration.KMPFirebase.minSDK
 
         compilerOptions {
             jvmTarget.set(JvmTarget.fromTarget(ProjectConfiguration.Compiler.jvmTarget))
@@ -105,8 +82,8 @@ mavenPublishing {
     coordinates(groupId = group.toString(), artifactId = ProjectConfiguration.KMPFirebase.Maven.artifactId, version = version.toString())
     configure(
         platform = KotlinMultiplatform(
-            javadocJar = JavadocJar.Dokka("dokkaHtml"),
-            sourcesJar = false,
+            javadocJar = JavadocJar.Dokka("dokkaGeneratePublicationHtml"),
+            sourcesJar = SourcesJar.Sources(),
         )
     )
 

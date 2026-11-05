@@ -1,18 +1,18 @@
 [versions]
-kotlin = "2.2.10"
-gradle = "8.13.0"
-dependencyVersionsPlugin = "0.52.0"
-dokka = "2.0.0"
-mavenPublish = "0.34.0"
-androidAnnotations = "1.9.1"
-coroutines = "1.10.2"
+kotlin = "2.4.21"
+gradle = "9.5.0"
+dependencyVersionsPlugin = "0.67.0"
+dokka = "2.2.0"
+mavenPublish = "0.37.0"
+androidAnnotations = "1.11.0"
+coroutines = "1.11.0"
 napier = "2.7.1"
-kmpKit = "1.0.10"
-firebaseGitLiveApp = "2.3.0" # Firebase for KMP https://firebaseopensource.com/projects/gitliveapp/firebase-kotlin-sdk/
-serializationJson = "1.9.0"
+kmpKit = "1.0.14"
+firebaseGitLiveApp = "2.7.0" # Firebase for KMP https://firebaseopensource.com/projects/gitliveapp/firebase-kotlin-sdk/
+serializationJson = "1.12.0"
 
 # Android
-androidCore = "1.17.0"
+androidCore = "1.19.1"
 
 [libraries]
 napier = { group = "io.github.aakira", name = "napier", version.ref = "napier" }
@@ -38,8 +38,8 @@ firebase-analytics = { group = "dev.gitlive", name = "firebase-analytics", versi
 kotlin-multiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 android-application = { id = "com.android.application", version.ref = "gradle" }
-android-library = { id = "com.android.library", version.ref = "gradle" }
-dependency-versions = { id = "com.github.ben-manes.versions", version.ref = "dependencyVersionsPlugin" }
+android-kotlin-multiplatform-library = { id = "com.android.kotlin.multiplatform.library", version.ref = "gradle" }
+dependency-versions = { id = "io.github.ben-manes.versions", version.ref = "dependencyVersionsPlugin" }
 dokka = { id = "org.jetbrains.dokka", version.ref = "dokka" }
 maven-publish = { id = "com.vanniktech.maven.publish", version.ref = "mavenPublish" }
 
