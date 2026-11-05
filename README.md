@@ -1,3 +1,4 @@
+[![Maven Central Version](https://img.shields.io/maven-central/v/io.github.tweener/kmp-firebase?color=orange)](https://central.sonatype.com/artifact/io.github.tweener/kmp-firebase)
 [![Kotlin](https://img.shields.io/badge/kotlin-2.4.21-blue.svg?logo=kotlin)](http://kotlinlang.org)
 ![gradle-version](https://img.shields.io/badge/gradle-9.5.0-blue?logo=gradle)
 [![License](https://img.shields.io/badge/License-Apache%202.0-green.svg)](https://opensource.org/licenses/Apache-2.0)
@@ -7,108 +8,216 @@
 
 ---
 
-# Kmplate-lib
+# KMPFirebase
 
-**Kmplate-lib** is a template to easily create a new Kotlin Multiplatform library with Maven Central publishing configuration.
+**KMPFirebase** is a Kotlin Multiplatform library for Android and iOS which wraps the [GitLive Firebase Kotlin SDK](https://github.com/GitLiveApp/firebase-kotlin-sdk) and provides a more straightforward implementation for the Firebase services most apps use: Firestore, Remote Config, Cloud Functions, Analytics and Crashlytics.
 
 <br>
 
 Be sure to show your support by starring ⭐️ this repository!
 
+---
+
+## 🌟 Features
+
+- 🗄️ **Firestore**: Read, listen to, create, add, update and delete documents in a single call, with your own `@Serializable` models.
+- 🎛️ **Remote Config**: Fetch and read values with a default value returned when anything goes wrong.
+- ☁️ **Cloud Functions**: Call an HTTPS callable function with typed request and response.
+- 📊 **Analytics** and 💥 **Crashlytics**: Get the Firebase instances from common code.
+- 📅 **Timestamps**: Convert Firestore `Timestamp` to and from `kotlinx.datetime` `LocalDate` and `LocalDateTime`.
+- 🪵 **Logging**: Firestore calls, Remote Config values and every failure are logged with [Napier](https://github.com/AAkira/Napier).
+
+---
+
 ## 🛠️ Installation
 
-### 1. Setup
-After cloning this repo as a template, the first thing you need to do is configure it with your desired project name and package name. This is done by running the `renameProject` Gradle task.
-
-##### Run the `renameProject` Task
-The `renameProject` task customizes the library to fit your project by:
-1. **Deleting any existing directory** with the target project name (`projectName`), if it exists.
-2. **Renaming directories** (e.g., `changehere`) to match the provided `projectName`.
-3. **Updating file references** (e.g., `settings.gradle.kts`, `build.gradle.kts`) with the new project name and package name.
-4. **Updating `package` and `import` statements** in all relevant `.kt` and configuration files.
-
-##### Usage
-Run the task using the following command:
-```bash
-./gradlew renameProject -PprojectName=MyLibrary -PpackageName=com.example.mylibrary
+1. In your `settings.gradle.kts` file, add Maven Central to your repositories:
+```Groovy
+repositories {
+  mavenCentral()
+}
 ```
 
-This will:
-- Rename directories to use `mylibrary`.
-- Update file references to use `com.example.mylibrary`.
+2. Then add KMPFirebase dependency to your `commonMain` source set.
 
----
+<details>
+	<summary>With version catalog:</summary>
 
-##### Dry Run Option
-Before making changes, you can preview the changes this task will make by using the `-PdryRun` option:
+Open `libs.versions.toml`:
 
-```bash
-./gradlew renameProject -PprojectName=MyLibrary -PpackageName=com.example.mylibrary -PdryRun
+```Groovy
+[versions]
+kmpFirebase = "1.6.0" // Check latest version
+
+[libraries]
+kmpfirebase = { group = "io.github.tweener", name = "kmp-firebase", version.ref = "kmpFirebase" }
 ```
 
-This will log all planned changes without applying them.
+Then in your module `build.gradle.kts` add:
+```Groovy
+kotlin {
+    sourceSets {
+        commonMain.dependencies {
+            implementation(libs.kmpfirebase)
+        }
+    }
+}
+```
+</details>
 
-##### Task Output
-After running the task, you will see:
-- A **summary of renamed directories**.
-- A **list of updated files**.
-- Any skipped or failed operations (e.g., if a file is locked).
+<details>
+	<summary>Without version catalog:</summary>
+
+In your module `build.gradle.kts` add:
+```Groovy
+kotlin {
+    sourceSets {
+        commonMain.dependencies {
+            val kmpFirebase_version = "1.6.0" // Check latest version
+
+            implementation("io.github.tweener:kmp-firebase:$kmpFirebase_version")
+        }
+    }
+}
+```
+</details>
+
+The latest version is: [![Maven Central Version](https://img.shields.io/maven-central/v/io.github.tweener/kmp-firebase?color=orange)](https://central.sonatype.com/artifact/io.github.tweener/kmp-firebase)
+
+### Requirements
+
+- **Targets**: Android, `iosArm64` and `iosSimulatorArm64`.
+- **Android**: `minSdk` 24, and your app must compile against Android API 37 or later (`compileSdk = 37`).
+- **Kotlin serialization**: your Firestore models must be `@Serializable`, so apply the `org.jetbrains.kotlin.plugin.serialization` Gradle plugin to the module declaring them.
 
 ---
 
-##### Additional Notes
-1. **Mandatory Parameters**:
-   - `projectName`: The desired name for your project.
-   - `packageName`: The package name to use throughout the library.
+## 🔧 Configuration
 
-2. **Run Only Once**:
-   - This task is intended to be run only once when setting up the library for your project.
+KMPFirebase exposes the GitLive Firebase SDK modules it uses (`firebase-firestore`, `firebase-config`, `firebase-functions`, `firebase-crashlytics` and `firebase-analytics`) as `api` dependencies, so your app sets Firebase up the way the GitLive SDK requires:
 
-3. **Dry Run**:
-   - Always recommended to run with `-PdryRun` first to ensure the changes align with your expectations.
+- **Android**: add your `google-services.json` and apply the Google Services Gradle plugin.
+- **iOS**: the Firebase iOS SDK is not linked transitively, so add it to your iOS app with Swift Package Manager or CocoaPods, then call `FirebaseApp.configure()` at launch, before using any Firebase API.
+
+See the [GitLive Firebase Kotlin SDK README](https://github.com/GitLiveApp/firebase-kotlin-sdk) for the full setup and the supported Firebase iOS SDK versions.
+
+To see KMPFirebase logs, initialize [Napier](https://github.com/AAkira/Napier) in your app, for instance with `Napier.base(DebugAntilog())`.
 
 ---
 
-With this task, you can seamlessly configure your library with minimal manual effort.
+## 🧑‍💻 Usage
 
-### 2. Configure the library for Maven Central publishing
-Open `buildSrc/src/main/kotlin/ProjectConfiguration.kt` and update all the properties within the `object Maven` block.
+### Firestore
 
-### 3. Configure publishing on Maven Central with Sonatype
+Declare your models by extending `FirestoreModel`, which holds the Firestore document ID:
 
-Publishing the library is done via Github Actions, from the workflow `.github/workflows/publish.yml`, and will automatically publish a new version of the library to Maven Central, for every new  
-release created on Github.
+```kotlin
+@Serializable
+data class City(
+    override var id: String = "",
+    val name: String,
+    val population: Long,
+) : FirestoreModel()
+```
 
-- First, you need to create an account on Sonatype. Follow this guide: https://central.sonatype.org/publish/publish-guide/. You should end up with a **username**, a **password** and a **staging profile ID**.
-- Once you have your account, you need to request the creation of your groupId (ie. 'com.mycompany.myname'). Create an issue on their Jira. Example: https://issues.sonatype.org/browse/OSSRH-97913.
-- Then, create your secret key by following this guide: https://central.sonatype.org/publish/requirements/gpg/. You should end up with a **secret key**, a **secret key ID** and a **secret key password**.
+Then use `FirebaseFirestoreService` to read and write documents:
 
-To configure the publishing, we need to create 6 [Github Actions secrets](https://docs.github.com/en/actions/security-guides/encrypted-secrets):
+```kotlin
+val firestoreService = FirebaseFirestoreService()
 
-1. `OSSRH_GPG_SECRET_KEY`: The value of the secret key created.
-2. `OSSRH_GPG_SECRET_KEY_ID`: The ID of the secret key created (the last 16 digits).
-3. `OSSRH_GPG_SECRET_KEY_PASSWORD`: The password of the secret key created.
-4. `OSSRH_PASSWORD`: Your Sonatype account password.
-5. `OSSRH_STAGING_PROFILE_ID`: Your Sonatype staging profile ID.
-6. `OSSRH_USERNAME`: Your Sonatype account username.
+// Read all documents of a collection, with their document ID set in `id`
+val cities: List<City> = firestoreService.getAll<City>(collection = "cities")
 
-### 4. Configure Slack notifications for Github build status
-You can configure Slack to get notifications about Github build status.
+// Read a single document
+val city: City = firestoreService.get<City>(collection = "cities", id = "LA")
 
-##### 1. Create a webhook post messages on Slack
-1. For Github Actions to post messages on Slack, you must create a new webhook URL by using the [Incoming Webhook](https://slack.com/apps/A0F7XDUAZ-incoming-webhooks) app.
-2. Create a new [Github Actions secret](https://docs.github.com/en/actions/security-guides/encrypted-secrets) with name `SLACK_WEBHOOK_URL`, and copy paste the webhook created in the previous step as  
-   value of this secret.
+// Listen to a single document
+firestoreService.getAsFlow<City>(collection = "cities", id = "LA")
+    .collect { city -> println(city.name) }
 
-##### 2. Configure the Slack bot to post on Slack
-We will configure 2 Slack bots to post message on Slack: one bot to check for outdated dependencies, and one bot for the build status.  
-To configure these 2 Slack bots, we need to create 3 [Github Actions variables](https://docs.github.com/en/actions/learn-github-actions/variables):
+// Listen to a collection: the first emission holds every document, the next ones only the documents that changed
+firestoreService.getAllAsFlow<City>(collection = "cities")
+    .collect { changedCities -> println(changedCities.size) }
 
-1. `SLACK_GITHUB_ACTIONS_CHANNEL_NAME`: the name of the Slack channel where Github Actions will post messages (ie. `myproject_build_status`).
-2. `SLACK_GITHUB_ACTIONS_DEPENDENCY_UPDATES_ICON_URL`: the icon URL to be used as a profile picture for the "Dependency Updates" Slack bot.
-3. `SLACK_GITHUB_ACTIONS_ICON_URL`: the icon URL to be used as a profile picture for the "Github Actions CI" Slack bot.
+// Create a document with a given ID, and get it back
+val createdCity: City = firestoreService.create<City>(collection = "cities", id = "SF", data = mapOf("name" to "San Francisco", "population" to 808_437L))
 
-### 4. Set Java JDK version
+// Add a document with an ID generated by Firestore
+firestoreService.add(collection = "cities", data = mapOf("name" to "Tokyo", "population" to 14_187_176L))
 
-To set the Java JDK version to use when building the library with Github Actions, you need to create another Github Actions variables `JAVA_JDK_VERSION` and set it to the desired Java JDK version (ie. `21`).
-This version will be use accross all workflows.
+// Update some fields of a document
+firestoreService.update(collection = "cities", id = "SF", data = mapOf("population" to 808_988L))
+
+// Delete a document
+firestoreService.delete(collection = "cities", id = "SF")
+```
+
+Only `getAll` and `getAllAsFlow` set `id` from the Firestore document ID. `get`, `getAsFlow` and `create` read `id` from the document data, so store it in the document if you need it there.
+
+The `suspend` functions log and rethrow any error, so wrap them in a `try`/`catch` where needed.
+
+#### Timestamps
+
+Convert between Firestore `Timestamp` and `kotlinx.datetime` types:
+
+```kotlin
+val timestamp: Timestamp = LocalDateTime(2026, 11, 5, 9, 30).toTimestamp()
+val dateTimestamp: Timestamp = LocalDate(2026, 11, 5).toTimestamp()
+
+val localDateTime: LocalDateTime = timestamp.toLocalDateTime()
+val localDate: LocalDate = timestamp.toLocalDate()
+```
+
+### Remote Config
+
+`FirebaseRemoteConfigService` fetches and activates the Remote Config values on every read. Pass `isDebug = true` to lower the minimum fetch interval to 10 seconds while developing.
+
+`FirebaseRemoteConfigDataSource` reads typed values, and returns `defaultValue` if the value can't be fetched or read:
+
+```kotlin
+val remoteConfigService = FirebaseRemoteConfigService(isDebug = BuildConfig.DEBUG)
+val remoteConfig = FirebaseRemoteConfigDataSource(firebaseRemoteConfigService = remoteConfigService)
+
+val isFeatureEnabled: Boolean = remoteConfig.getBoolean(key = "feature_enabled", defaultValue = false)
+val maxItems: Long = remoteConfig.getLong(key = "max_items", defaultValue = 10L)
+val welcomeMessage: String = remoteConfig.getString(key = "welcome_message", defaultValue = "Welcome!")
+```
+
+For any other type, call `remoteConfigService.get<T>(key, defaultValue)` directly.
+
+### Cloud Functions
+
+`FirebaseFunctionsService` calls an HTTPS callable function with a 30-second timeout, and returns `null` if the call fails:
+
+```kotlin
+@Serializable
+data class GreetingRequest(val name: String)
+
+@Serializable
+data class GreetingResponse(val message: String)
+
+val functionsService = FirebaseFunctionsService()
+
+val response: GreetingResponse? = functionsService.callFunction<GreetingRequest, GreetingResponse>(
+    functionName = "greet",
+    data = GreetingRequest(name = "Ada"),
+)
+```
+
+### Analytics and Crashlytics
+
+Get the GitLive Firebase instances to use their full API:
+
+```kotlin
+val analytics: FirebaseAnalytics = FirebaseAnalyticsService().getAnalytics()
+analytics.logEvent("city_viewed", mapOf("city" to "LA"))
+
+val crashlytics: FirebaseCrashlytics = FirebaseCrashlyticsService().getCrashlytics()
+crashlytics.recordException(exception)
+```
+
+---
+
+## 📜 Licence
+
+KMPFirebase is licensed under the [Apache-2.0](https://github.com/Tweener/KMPFirebase/blob/main/LICENSE).
